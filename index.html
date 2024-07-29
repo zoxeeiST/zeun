@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEUN</title>
+    <link rel="icon" href="/icons/ZEUNTitle.png" type="image/icon type">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .sidebar {
+            background-color: #000000;
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            z-index: 1;
+            position: relative;
+        }
+        .content {
+            flex: 1;
+            background-color: transparent;
+            position: relative;
+            z-index: 1;
+        }
+        .image {
+            width: 200px;
+            height: 200px;
+            background-color: #c4c4c4;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            position: absolute;
+            top: 20%;
+        }
+        .image img {
+            border-radius: 10px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: absolute;
+            top: 50%;
+            color: white;
+        }
+        .subtitle {
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: absolute;
+            width: 250px;
+            top: 58%;
+        }
+        .music-button {
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 25%;
+            position: absolute;
+            top: 70%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .music-button img {
+            width: 30px;
+            height: 30px;
+        }
+        .play-button {
+            background-color: #b10000;
+            padding: 10px 20px;
+            border-radius: 20px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1;
+            color: white;
+        }
+        .right-sidebar {
+            background-color: #ffffff;
+            width: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            gap: 10px;
+            z-index: 1;
+        }
+        .social-icons img {
+            width: 30px;
+            height: 30px;
+            padding-left: 15px;
+        }
+        .game-icons img {
+            width: 30px;
+            height: 30px;
+            padding-left: 15px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 20px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <video class="video-background" autoplay muted loop>
+        <source src="changli.mp4" type="video/mp4">
+    </video>
+    <div class="sidebar">
+        <div class="image">
+            <img src="profile/nd.png" alt="Zeun Image" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="title">ZEUN</div>
+        <div class="subtitle">"IM FEELING EVERYTHING BEFORE I GOT UP"</div>
+        <div class="music-button" id="musicButton">
+            <img src="/icons/equalizer.png" alt="Music">
+        </div>
+    </div>
+    <div class="content">
+        <a href="javascript:void(0)" class="play-button" id="playButton">プレイ ウィズ ミー</a>
+    </div>
+    <div class="right-sidebar">
+        <div class="social-icons">
+            <a href="https://www.facebook.com/zeun.2024/"><img src="icons/facebook.png" alt="Facebook"></a>
+            <a href="https://www.discord.com/users/877577068408361020"><img src="/icons/discord.png" alt="Game"></a>
+            <a href="https://twitter.com"><img src="/icons/twitter.png" alt="Twitter"></a>
+            <a href="https://www.twitch.tv/zeuntx"><img src="/icons/twitch.png" alt="Twitch"></a>
+        </div>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="game-icons">
+                <a href="https://wutheringwaves.kurogames.com/en/"><img src="/games/wuwa.png" alt="Wuthering Waves"></a>
+                <a href="https://playvalorant.com/en-sg/"><img src="/games/valoranticon.png" alt="Valorant"></a>
+                <a href="https://hsr.hoyoverse.com/en-us/"><img src="/games/starrail.png" alt="Star Rail"></a>
+                <a href="https://pgr.kurogame.net/"><img src="/games/pgr.png" alt="PGR"></a>
+            </div>
+        </div>
+    </div>
+
+    <audio id="backgroundMusic" src="/music/coming down.mp3" loop></audio>
+
+    <script>
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("playButton");
+        var span = document.getElementsByClassName("close")[0];
+        var musicButton = document.getElementById("musicButton");
+        var audio = document.getElementById("backgroundMusic");
+        var isPlaying = false;
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        audio.volume = 0.4;
+
+        musicButton.onclick = function() {
+            if (isPlaying) {
+                audio.pause();
+                musicButton.style.backgroundColor = "#ffffff";
+                isPlaying = false;
+            } else {
+                audio.play();
+                musicButton.style.backgroundColor = "#ff0000";
+                isPlaying = true;
+            }
+        }
+    </script>
+</body>
+</html>
